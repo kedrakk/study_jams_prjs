@@ -1,7 +1,9 @@
 // ignore_for_file: library_private_types_in_public_api
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../components/circle_image.dart';
 import '../models/models.dart';
@@ -59,9 +61,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         buildDarkModeRow(),
         ListTile(
           title: const Text('View raywenderlich.com'),
-          onTap: () {
-            Provider.of<ProfileManager>(context, listen: false)
-                .tapOnRaywenderlich(true);
+          onTap: () async {
+            if (kIsWeb) {
+              await launchUrl(Uri.parse('https://www.raywenderlich.com/'));
+            } else {
+              Provider.of<ProfileManager>(context, listen: false)
+                  .tapOnRaywenderlich(true);
+            }
           },
         ),
         ListTile(
